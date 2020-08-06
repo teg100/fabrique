@@ -32,3 +32,15 @@ class Quiz(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    answer = models.CharField(max_length=512, blank=True)
+    response = models.ForeignKey('Response', on_delete=models.CASCADE, related_name='answers')
+
+
+class Response(models.Model):
+    uid = models.PositiveIntegerField()
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='responses')
+
