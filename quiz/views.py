@@ -4,7 +4,8 @@ from .serializers import *
 
 
 class QuizViewSet(viewsets.ModelViewSet):
-    serializer_class = QuestionSerializer
+
+    serializer_class = QuizSerializers
 
     def get_queryset(self):
         if self.action == 'list':
