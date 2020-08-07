@@ -38,8 +38,7 @@ class Quiz(models.Model):
     end_date = models.DateField()
     description = models.TextField()
     is_active = models.BooleanField(default=False)
-    questions = models.ManyToManyField(Question, blank=True, null=True, related_name='quizes')
-
+    questions = models.ManyToManyField(Question, blank=True, related_name='quizes')
     def __str__(self):
         return self.title
 
