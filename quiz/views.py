@@ -6,7 +6,9 @@ from rest_framework.generics import *
 
 
 class QuizViewSet(viewsets.ModelViewSet):
-
+    """
+            CRUD operations for quiz
+    """
     serializer_class = QuizSerializers
 
     def get_queryset(self):
@@ -22,16 +24,26 @@ class QuizViewSet(viewsets.ModelViewSet):
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
+    """
+        CRUD operations for question
+    """
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsAdminUser]
 
 
 class ResponseCreateView(viewsets.ModelViewSet):
+    """
+            Create response
+        """
+
     serializer_class = ResponseSerializer
 
 
 class ResponseUserList(ListAPIView):
+    """
+        List responses for current user
+    """
     serializer_class = ResponseSerializer
 
     def get_queryset(self):
