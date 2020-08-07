@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 from rest_framework.permissions import IsAdminUser
+from rest_framework.generics import *
 
 
 class QuizViewSet(viewsets.ModelViewSet):
@@ -24,3 +25,15 @@ class QuestionViewSet(viewsets.ModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
     permission_classes = [IsAdminUser]
+
+
+class ResponseCreateView(viewsets.ModelViewSet):
+    serializer_class = ResponseSerializer
+
+
+class ResponseUserList(ListAPIView):
+    serializer_class = ResponseSerializer
+
+    def get_queryset(self):
+        queryset = Response.objects.filter(uid=self.kwargs['uid'])
+        return queryset

@@ -44,7 +44,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Answer
-        fields = ['id', 'question', 'text']
+        fields = ['id', 'question', 'answer']
 
 
 class ResponseSerializer(serializers.ModelSerializer):
@@ -55,3 +55,11 @@ class ResponseSerializer(serializers.ModelSerializer):
         model = Response
         fields = ['id', 'uid', 'quiz', 'answers']
 
+    def create(self, validated_data):
+        response = Response(uid=validated_data['uid'], quiz=validated_data['quiz'])
+        if not validated_data.get('answers'):
+            raise serializers.ValidationError('Not answers in report')
+        response.save()
+        for answer in validated_data.get('answers'):
+            response.answers.add(Answer.objects.create(**answer, response=response))
+        return response
