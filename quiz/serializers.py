@@ -41,6 +41,16 @@ class QuizSerializers(serializers.HyperlinkedModelSerializer):
         [quiz.questions.add(question) for question in questions]
         return quiz
 
+    def update(self, instance, validated_data):
+        validated_data.pop('questions')
+        questions = self.check_questions(self.initial_data.get('questions'))
+        Quiz.objects.filter(id=instance.id).update(**validated_data)
+        instance.questions.set('')
+        [instance.questions.add(question) for question in questions]
+        instance.save()
+        return instance
+
+
 class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -57,9 +67,9 @@ class ResponseSerializer(serializers.ModelSerializer):
         fields = ['id', 'uid', 'quiz', 'answers']
 
     def create(self, validated_data):
-        response = Response(uid=validated_data['uid'], quiz=validated_data['quiz'])
         if not validated_data.get('answers'):
             raise serializers.ValidationError('Not answers in report')
+        response = Response(uid=validated_data['uid'], quiz=validated_data['quiz'])
         response.save()
         for answer in validated_data.get('answers'):
             response.answers.add(Answer.objects.create(**answer, response=response))
