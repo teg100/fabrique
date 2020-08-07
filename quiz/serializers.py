@@ -17,6 +17,29 @@ class QuizSerializers(serializers.HyperlinkedModelSerializer):
         fields = ['url', 'id', 'title', 'start_date', 'end_date', 'description',
                   'is_active', 'questions']
 
+
+    def get_object_or_none(self, cls,  id_):
+        try:
+            return cls.objects.get(id=id_)
+        except cls.DoesNotExist:
+            return None
+
+    def check_questions(self, questions):
+        questions_query = []
+        for q in questions:
+            question = self.get_object_or_none(Question, q.get('id'))
+            if question:
+                questions_query.append(question)
+            else:
+                raise serializers.ValidationError({'questions': f'question with id={q.get("id")} does not exist'})
+
+    def create(self, validated_data):
+        validated_data.pop('questions')
+        questions = self.check_questions(self.initial_data.get('questions'))
+        quiz = Quiz.objects.create(**validated_data)
+        [quiz.questions.add(question) for question in questions]
+        return quiz
+
 class AnswerSerializer(serializers.ModelSerializer):
 
     class Meta:
