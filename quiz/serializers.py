@@ -32,6 +32,7 @@ class QuizSerializers(serializers.HyperlinkedModelSerializer):
                 questions_query.append(question)
             else:
                 raise serializers.ValidationError({'questions': f'question with id={q.get("id")} does not exist'})
+        return questions_query
 
     def create(self, validated_data):
         validated_data.pop('questions')
