@@ -7,14 +7,14 @@
 **ВАЖНО**: обязательно измените файл `.env.prod` и `.env.prod.db` для передачи в качестве переменных среды нужных параметров
 перед применением 
 
-Проект подготовлен для deploy с помощью Docker. Для этого выполните действия:
-2. Сборка обзазов и запуск контейнеров:\
-`docker-compose -f docker-compose.prod.yml up -d --build`
-3. Миграция в БД:\
-`docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput`
-4. Сборка static файлов:\
-`docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear`
-5. Создание суперпользователя: \
+Проект подготовлен для deploy с помощью Docker. Для этого выполните действия:\
+1. Сборка обзазов и запуск контейнеров:\
+`docker-compose -f docker-compose.prod.yml up -d --build`\
+2. Миграция в БД:\
+`docker-compose -f docker-compose.prod.yml exec web python manage.py migrate --noinput`\
+3. Сборка static файлов:\
+`docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic --no-input --clear`\
+4. Создание суперпользователя: \
 `docker-compose -f docker-compose.prod.yml exec web python manage.py createsuperuser`\
 Создание суперпользователя позволит использовать API в качестве администратора.
 
