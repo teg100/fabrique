@@ -6,7 +6,6 @@ import sys
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fabrique.settings')
-    os.environ.setdefault('DJANGO_CONFIGURATION', 'Dev')
 
     try:
         from django.core.management import execute_from_command_line
@@ -17,7 +16,6 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    from configurations.management import execute_from_command_line
     execute_from_command_line(sys.argv)
 
 
